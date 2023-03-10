@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+//@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class DemoUtilsTest {
 
     DemoUtils demoUtils;
@@ -12,23 +12,23 @@ class DemoUtilsTest {
     @BeforeEach
     void BeforeEach() {
         demoUtils = new DemoUtils();
-        System.out.println("@BeforeEach executes before the execution of each test method");
+        //System.out.println("@BeforeEach executes before the execution of each test method");
     }
 
     @AfterEach
     void AfterEach() {
         demoUtils = new DemoUtils();
-        System.out.println("@AfterEach executes after the execution of each test method \n");
+        //System.out.println("@AfterEach executes after the execution of each test method \n");
     }
 
     @BeforeAll
     static void BeforeAll() {
-        System.out.println("@BeforeAll executes only once before all test methods execution in the class\n");
+        //System.out.println("@BeforeAll executes only once before all test methods execution in the class\n");
     }
 
     @AfterAll
     static void AfterAll() {
-        System.out.println("@AfterAll executes only once after all test methods execution in the class");
+        //System.out.println("@AfterAll executes only once after all test methods execution in the class");
     }
 
     @Test
@@ -50,6 +50,25 @@ class DemoUtilsTest {
         assertNotNull(demoUtils.checkNull(str2), "Object should not be null");
     }
 
+    @Test
+    @DisplayName("Same and Not Same")
+    void testSameAndNotSame() {
+
+        String str = "guney";
+
+        assertSame(demoUtils.getAcademy(), demoUtils.getAcademyDuplicate(), "Object should refer to same object");
+        assertNotSame(str, demoUtils.getAcademy(), "Object should not refer to same object");
+    }
+
+    @Test
+    @DisplayName("True and False")
+    void testTrueAndFalse() {
+        int gradeOne = 10;
+        int gradeTwo = 5;
+
+        assertTrue(demoUtils.isGreater(gradeOne, gradeTwo), "This should return true");
+        assertFalse(demoUtils.isGreater(gradeTwo, gradeOne), "This should return false");
+    }
 }
 
 
