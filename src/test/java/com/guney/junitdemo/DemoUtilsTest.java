@@ -8,6 +8,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 //@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+//@TestMethodOrder(MethodOrderer.MethodName.class)
+//@TestMethodOrder(MethodOrderer.Random.class)
+//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestMethodOrder(MethodOrderer.DisplayName.class)
 class DemoUtilsTest {
 
