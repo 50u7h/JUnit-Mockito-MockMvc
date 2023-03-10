@@ -2,9 +2,12 @@ package com.guney.junitdemo;
 
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 //@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@TestMethodOrder(MethodOrderer.DisplayName.class)
 class DemoUtilsTest {
 
     DemoUtils demoUtils;
@@ -32,7 +35,7 @@ class DemoUtilsTest {
     }
 
     @Test
-    @DisplayName("Equals or Not Equals")
+    @DisplayName("01 - Equals or Not Equals")
     void testEqualsAndNotEquals() {
 
         assertEquals(6, demoUtils.add(2, 4), "2+4 must be 6");
@@ -40,20 +43,18 @@ class DemoUtilsTest {
     }
 
     @Test
-    @DisplayName("Null or Not Null")
+    @DisplayName("02 - Null or Not Null")
     void testNullAndNotNull() {
-
         String str1 = null;
-        String str2 = "luv2code";
+        String str2 = "guney";
 
         assertNull(demoUtils.checkNull(str1), "Object should be null");
         assertNotNull(demoUtils.checkNull(str2), "Object should not be null");
     }
 
     @Test
-    @DisplayName("Same and Not Same")
+    @DisplayName("03 - Same and Not Same")
     void testSameAndNotSame() {
-
         String str = "guney";
 
         assertSame(demoUtils.getAcademy(), demoUtils.getAcademyDuplicate(), "Object should refer to same object");
@@ -61,13 +62,37 @@ class DemoUtilsTest {
     }
 
     @Test
-    @DisplayName("True and False")
+    @DisplayName("04 - True and False")
     void testTrueAndFalse() {
         int gradeOne = 10;
         int gradeTwo = 5;
 
         assertTrue(demoUtils.isGreater(gradeOne, gradeTwo), "This should return true");
         assertFalse(demoUtils.isGreater(gradeTwo, gradeOne), "This should return false");
+    }
+
+    @Test
+    @DisplayName("05 - Array Equals")
+    void testArrayEquals() {
+        String[] stringArray = {"A", "B", "C"};
+
+        assertArrayEquals(stringArray, demoUtils.getFirstThreeLettersOfAlphabet(), "Arrays should be the same");
+    }
+
+    @Test
+    @DisplayName("06 - Iterable Equals")
+    void testIterableEquals() {
+        List<String> theList = List.of("gu", "N", "ey");
+
+        assertIterableEquals(theList, demoUtils.getAcademyInList(), "Expected list should be same as actual list");
+    }
+
+    @Test
+    @DisplayName("07 - Lines Match")
+    void testLinesMatch() {
+        List<String> theList = List.of("gu", "N", "ey");
+
+        assertLinesMatch(theList, demoUtils.getAcademyInList(), "Lines should match");
     }
 }
 
