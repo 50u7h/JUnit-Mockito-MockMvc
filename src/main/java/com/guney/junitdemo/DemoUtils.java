@@ -4,7 +4,7 @@ import java.util.List;
 
 public class DemoUtils {
 
-    private String academy = "Luv2Code Academy";
+    private String academy = "Guney Academy";
     private String academyDuplicate = academy;
     private String[] firstThreeLettersOfAlphabet = {"A", "B", "C"};
     private List<String> academyInList = List.of("gu", "N", "ey");
@@ -57,7 +57,7 @@ public class DemoUtils {
 
     public void checkTimeout() throws InterruptedException {
         System.out.println("I am going to sleep");
-        Thread.sleep(2000);
+        Thread.sleep(2999);
         System.out.println("Sleeping over");
     }
 
