@@ -1,7 +1,7 @@
 package com.guney.tdd;
 
 public class FizzBuzz {
-    
+
     public static String compute(int i) {
 
         StringBuilder result = new StringBuilder();
