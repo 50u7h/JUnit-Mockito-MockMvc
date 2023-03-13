@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="JUnit-Mockito-MockMvc:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>JUnit-Mockito-MockMvc</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="spring-boot-mvc-testing-demo-1.0.0.war">
+      <element id="artifact" artifact-name="JUnit-Mockito-MockMvc:war exploded" />
+    </root>
+  </artifact>
+</component>
