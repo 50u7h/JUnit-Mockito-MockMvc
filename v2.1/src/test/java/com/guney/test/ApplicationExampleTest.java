@@ -1,8 +1,7 @@
 package com.guney.test;
 
-import com.guney.component.MvcTestingExampleApplication;
-import com.guney.component.models.CollegeStudent;
-import com.guney.component.models.StudentGrades;
+import com.guney.test.models.CollegeStudent;
+import com.guney.test.models.StudentGrades;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +15,12 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes= MvcTestingExampleApplication.class)
+@SpringBootTest(classes = MvcTestingExampleApplication.class)
 public class ApplicationExampleTest {
+
+    @Test
+    void basicTest() {
+    }
 
     private static int count = 0;
 
@@ -108,9 +111,9 @@ public class ApplicationExampleTest {
     @Test
     public void findGradePointAverage() {
         assertAll("Testing all assertEquals",
-                ()-> assertEquals(353.25, studentGrades.addGradeResultsForSingleClass(
+                () -> assertEquals(353.25, studentGrades.addGradeResultsForSingleClass(
                         student.getStudentGrades().getMathGradeResults())),
-                ()-> assertEquals(88.31, studentGrades.findGradePointAverage(
+                () -> assertEquals(88.31, studentGrades.findGradePointAverage(
                         student.getStudentGrades().getMathGradeResults()))
         );
     }
