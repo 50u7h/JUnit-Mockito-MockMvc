@@ -119,6 +119,15 @@ public class StudentAndGradeService {
             scienceGradeDao.deleteById(id);
         }
 
+        if (gradeType.equals("history")) {
+            Optional<HistoryGrade> grade = historyGradeDao.findById(id);
+            if (!grade.isPresent()) {
+                return studentId;
+            }
+            studentId = grade.get().getStudentId();
+            historyGradeDao.deleteById(id);
+        }
+
         return studentId;
     }
 }

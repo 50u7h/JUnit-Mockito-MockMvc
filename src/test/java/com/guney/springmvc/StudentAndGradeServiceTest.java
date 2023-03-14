@@ -150,6 +150,6 @@ public class StudentAndGradeServiceTest {
 
         assertEquals(1, studentAndGradeService.deleteGrade(1, "science"), "Returns student id after delete");
 
-
+        assertEquals(1, studentAndGradeService.deleteGrade(1, "history"), "Returns student id after delete");
     }
 }
