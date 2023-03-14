@@ -8,21 +8,21 @@ import java.util.List;
 @Component
 public class GradeBook {
 
-    private List<GradebookCollegeStudent> students = new ArrayList<>();
+    private List<GradeBookCollegeStudent> students = new ArrayList<>();
 
     public GradeBook() {
 
     }
 
-    public GradeBook(List<GradebookCollegeStudent> students) {
+    public GradeBook(List<GradeBookCollegeStudent> students) {
         this.students = students;
     }
 
-    public List<GradebookCollegeStudent> getStudents() {
+    public List<GradeBookCollegeStudent> getStudents() {
         return students;
     }
 
-    public void setStudents(List<GradebookCollegeStudent> students) {
+    public void setStudents(List<GradeBookCollegeStudent> students) {
         this.students = students;
     }
 }

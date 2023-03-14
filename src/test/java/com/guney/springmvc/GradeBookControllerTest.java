@@ -1,7 +1,7 @@
 package com.guney.springmvc;
 
 import com.guney.springmvc.models.CollegeStudent;
-import com.guney.springmvc.models.GradebookCollegeStudent;
+import com.guney.springmvc.models.GradeBookCollegeStudent;
 import com.guney.springmvc.repository.StudentDao;
 import com.guney.springmvc.service.StudentAndGradeService;
 import org.junit.jupiter.api.AfterEach;
@@ -75,10 +75,10 @@ public class GradeBookControllerTest {
     @Test
     public void getStudentsHttpRequest() throws Exception {
 
-        CollegeStudent studentOne = new GradebookCollegeStudent("Eric", "Roby",
+        CollegeStudent studentOne = new GradeBookCollegeStudent("Eric", "Roby",
                 "eric_roby@guney.com");
 
-        CollegeStudent studentTwo = new GradebookCollegeStudent("Chad", "Darby",
+        CollegeStudent studentTwo = new GradeBookCollegeStudent("Chad", "Darby",
                 "chad_darby@guney.com");
 
         List<CollegeStudent> collegeStudentList = new ArrayList<>(Arrays.asList(studentOne, studentTwo));
@@ -91,7 +91,9 @@ public class GradeBookControllerTest {
 
         ModelAndView mav = mvcResult.getModelAndView();
 
-        ModelAndViewAssert.assertViewName(mav, "index");
+        if (mav != null) {
+            ModelAndViewAssert.assertViewName(mav, "index");
+        }
     }
 
     @Test

@@ -1,9 +1,6 @@
 package com.guney.springmvc;
 
-import com.guney.springmvc.models.CollegeStudent;
-import com.guney.springmvc.models.HistoryGrade;
-import com.guney.springmvc.models.MathGrade;
-import com.guney.springmvc.models.ScienceGrade;
+import com.guney.springmvc.models.*;
 import com.guney.springmvc.repository.HistoryGradesDao;
 import com.guney.springmvc.repository.MathGradesDao;
 import com.guney.springmvc.repository.ScienceGradesDao;
@@ -171,6 +168,24 @@ public class StudentAndGradeServiceTest {
 
         assertEquals(0, studentAndGradeService.deleteGrade(0, "science"), "No student should have 0 id");
         assertEquals(0, studentAndGradeService.deleteGrade(1, "literature"), "No student should have a literature class");
+
+    }
+
+    @Test
+    public void studentInformation() {
+
+        GradeBookCollegeStudent gradeBookCollegeStudent = studentAndGradeService.studentInformation(1);
+
+        assertNotNull(gradeBookCollegeStudent);
+
+        assertEquals(1, gradeBookCollegeStudent.getId());
+        assertEquals("test", gradeBookCollegeStudent.getFirstname());
+        assertEquals("TEST", gradeBookCollegeStudent.getLastname());
+        assertEquals("test.TEST@guney.com", gradeBookCollegeStudent.getEmailAddress());
+
+        assertEquals(1, gradeBookCollegeStudent.getStudentGrades().getMathGradeResults().size());
+        assertEquals(1, gradeBookCollegeStudent.getStudentGrades().getScienceGradeResults().size());
+        assertEquals(1, gradeBookCollegeStudent.getStudentGrades().getHistoryGradeResults().size());
 
     }
 }
