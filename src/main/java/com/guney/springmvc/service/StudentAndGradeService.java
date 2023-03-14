@@ -2,7 +2,9 @@ package com.guney.springmvc.service;
 
 import com.guney.springmvc.models.CollegeStudent;
 import com.guney.springmvc.models.MathGrade;
+import com.guney.springmvc.models.ScienceGrade;
 import com.guney.springmvc.repository.MathGradesDao;
+import com.guney.springmvc.repository.ScienceGradesDao;
 import com.guney.springmvc.repository.StudentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,6 +26,13 @@ public class StudentAndGradeService {
 
     @Autowired
     private MathGradesDao mathGradeDao;
+
+    @Autowired
+    @Qualifier("scienceGrades")
+    private ScienceGrade scienceGrade;
+
+    @Autowired
+    private ScienceGradesDao scienceGradeDao;
 
     public void createStudent(String firstName, String lastName, String email) {
         CollegeStudent student = new CollegeStudent(firstName, lastName, email);
@@ -59,6 +68,13 @@ public class StudentAndGradeService {
                 mathGrade.setGrade(grade);
                 mathGrade.setStudentId(studentId);
                 mathGradeDao.save(mathGrade);
+                return true;
+            }
+            if (gradeType.equals("science")) {
+                scienceGrade.setId(0);
+                scienceGrade.setGrade(grade);
+                scienceGrade.setStudentId(studentId);
+                scienceGradeDao.save(scienceGrade);
                 return true;
             }
         }
