@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StudentDao extends JpaRepository<CollegeStudent, Integer> {
-    public CollegeStudent findByEmailAddress(String email);
+    CollegeStudent findByEmailAddress(String email);
 }

@@ -90,19 +90,32 @@ public class StudentAndGradeServiceTest {
     @Test
     public void deleteStudentService() {
         Optional<CollegeStudent> deletedStudent = studentDao.findById(1);
+        Optional<MathGrade> deletedMathGrade = mathGradeDao.findById(1);
+        Optional<ScienceGrade> deletedScienceGrade = scienceGradeDao.findById(1);
+        Optional<HistoryGrade> deletedHistoryGrade = historyGradeDao.findById(1);
 
         assertTrue(deletedStudent.isPresent(), "Return True");
+        assertTrue(deletedMathGrade.isPresent());
+        assertTrue(deletedScienceGrade.isPresent());
+        assertTrue(deletedHistoryGrade.isPresent());
 
         studentAndGradeService.deleteStudent(1);
 
         deletedStudent = studentDao.findById(1);
+        deletedMathGrade = mathGradeDao.findById(1);
+        deletedScienceGrade = scienceGradeDao.findById(1);
+        deletedHistoryGrade = historyGradeDao.findById(1);
 
         assertFalse(deletedStudent.isPresent(), "Return False");
+        assertFalse(deletedMathGrade.isPresent(), "Return False");
+        assertFalse(deletedScienceGrade.isPresent(), "Return False");
+        assertFalse(deletedHistoryGrade.isPresent(), "Return False");
+
     }
 
     @Sql("/insertData.sql")
     @Test
-    public void getGradebookService() {
+    public void getGradeBookService() {
 
         Iterable<CollegeStudent> iterableCollegeStudents = studentAndGradeService.getGradeBook();
 
@@ -128,9 +141,9 @@ public class StudentAndGradeServiceTest {
         Iterable<HistoryGrade> historyGrades = historyGradeDao.findGradeByStudentId(1);
 
 
-        assertTrue(((Collection<MathGrade>) mathGrades).size() == 2, "Student has math grades");
-        assertTrue(((Collection<ScienceGrade>) scienceGrades).size() == 2, "Student has science grades");
-        assertTrue(((Collection<HistoryGrade>) historyGrades).size() == 2, "Student has history grades");
+        assertEquals(2, ((Collection<MathGrade>) mathGrades).size(), "Student has math grades");
+        assertEquals(2, ((Collection<ScienceGrade>) scienceGrades).size(), "Student has science grades");
+        assertEquals(2, ((Collection<HistoryGrade>) historyGrades).size(), "Student has history grades");
     }
 
     @Test

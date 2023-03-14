@@ -25,7 +25,6 @@
           <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.19.0" />
           <element id="library" level="project" name="Maven: org.slf4j:jul-to-slf4j:2.0.6" />
           <element id="library" level="project" name="Maven: jakarta.annotation:jakarta.annotation-api:2.1.1" />
-          <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.33" />
           <element id="library" level="project" name="Maven: org.thymeleaf:thymeleaf-spring6:3.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.thymeleaf:thymeleaf:3.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.attoparser:attoparser:2.0.6.RELEASE" />
@@ -83,6 +82,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:6.0.4" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aspects:6.0.4" />
           <element id="library" level="project" name="Maven: com.h2database:h2:2.1.214" />
+          <element id="library" level="project" name="Maven: org.yaml:snakeyaml:2.0" />
         </element>
       </element>
       <element id="directory" name="META-INF">

@@ -58,11 +58,15 @@ public class StudentAndGradeService {
     public void deleteStudent(int id) {
         if (checkIfStudentIsNull(id)) {
             studentDao.deleteById(id);
+            mathGradeDao.deleteByStudentId(id);
+            scienceGradeDao.deleteByStudentId(id);
+            historyGradeDao.deleteByStudentId(id);
         }
     }
 
     public Iterable<CollegeStudent> getGradeBook() {
-        return studentDao.findAll();
+        Iterable<CollegeStudent> collegeStudents = studentDao.findAll();
+        return collegeStudents;
     }
 
     public boolean createGrade(double grade, int studentId, String gradeType) {
@@ -103,7 +107,7 @@ public class StudentAndGradeService {
 
         if (gradeType.equals("math")) {
             Optional<MathGrade> grade = mathGradeDao.findById(id);
-            if (!grade.isPresent()) {
+            if (grade.isEmpty()) {
                 return studentId;
             }
             studentId = grade.get().getStudentId();
@@ -112,7 +116,7 @@ public class StudentAndGradeService {
 
         if (gradeType.equals("science")) {
             Optional<ScienceGrade> grade = scienceGradeDao.findById(id);
-            if (!grade.isPresent()) {
+            if (grade.isEmpty()) {
                 return studentId;
             }
             studentId = grade.get().getStudentId();
@@ -121,7 +125,7 @@ public class StudentAndGradeService {
 
         if (gradeType.equals("history")) {
             Optional<HistoryGrade> grade = historyGradeDao.findById(id);
-            if (!grade.isPresent()) {
+            if (grade.isEmpty()) {
                 return studentId;
             }
             studentId = grade.get().getStudentId();

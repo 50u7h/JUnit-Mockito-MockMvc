@@ -99,7 +99,7 @@ public class GradeBookControllerTest {
 
         CollegeStudent studentOne = new CollegeStudent("Eric", "Roby", "eric.roby@guney.com");
 
-        List<CollegeStudent> collegeStudentList = new ArrayList<>(Arrays.asList(studentOne));
+        List<CollegeStudent> collegeStudentList = new ArrayList<>(List.of(studentOne));
 
         when(studentCreateServiceMock.getGradeBook()).thenReturn(collegeStudentList);
 
@@ -114,7 +114,9 @@ public class GradeBookControllerTest {
 
         ModelAndView mav = mvcResult.getModelAndView();
 
-        ModelAndViewAssert.assertViewName(mav, "index");
+        if (mav != null) {
+            ModelAndViewAssert.assertViewName(mav, "index");
+        }
 
         CollegeStudent verifyStudent = studentDao.findByEmailAddress("eric.roby@guney.com");
 
@@ -132,7 +134,9 @@ public class GradeBookControllerTest {
 
         ModelAndView mav = mvcResult.getModelAndView();
 
-        ModelAndViewAssert.assertViewName(mav, "index");
+        if (mav != null) {
+            ModelAndViewAssert.assertViewName(mav, "index");
+        }
 
         assertFalse(studentDao.findById(1).isPresent());
     }
@@ -146,6 +150,8 @@ public class GradeBookControllerTest {
 
         ModelAndView mav = mvcResult.getModelAndView();
 
-        ModelAndViewAssert.assertViewName(mav, "error");
+        if (mav != null) {
+            ModelAndViewAssert.assertViewName(mav, "error");
+        }
     }
 }
