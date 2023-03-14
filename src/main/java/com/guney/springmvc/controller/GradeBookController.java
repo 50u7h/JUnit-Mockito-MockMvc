@@ -13,13 +13,13 @@ public class GradeBookController {
     @Autowired
     private GradeBook gradeBook;
 
-//    @Autowired
-//    private StudentAndGradeService studentAndGradeService;
+    @Autowired
+    private StudentAndGradeService studentAndGradeService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getStudents(Model m) {
-//        Iterable<CollegeStudent> collegeStudents = studentAndGradeService.getGradeBook();
-//        m.addAttribute("students", collegeStudents);
+        Iterable<CollegeStudent> collegeStudents = studentAndGradeService.getGradeBook();
+        m.addAttribute("students", collegeStudents);
         return "index";
     }
 
