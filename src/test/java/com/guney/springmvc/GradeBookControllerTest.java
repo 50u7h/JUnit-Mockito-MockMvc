@@ -2,6 +2,7 @@ package com.guney.springmvc;
 
 import com.guney.springmvc.models.CollegeStudent;
 import com.guney.springmvc.models.GradebookCollegeStudent;
+import com.guney.springmvc.repository.StudentDao;
 import com.guney.springmvc.service.StudentAndGradeService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,19 +45,24 @@ public class GradeBookControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private StudentDao studentDao;
+
     @Mock
     private StudentAndGradeService studentCreateServiceMock;
 
 
     @BeforeEach
     public void setupDatabase() {
-        jdbc.execute("insert into student(id, firstname, lastname, email_address) " +
-                "values (1, 'Eric', 'Roby', 'eric.roby@guney.com')");
+        CollegeStudent student = new CollegeStudent("Eric", "Roby", "eric.roby@guney.com");
+        student.setId(1);
+        studentDao.save(student);
     }
 
     @AfterEach
     public void setupAfterTransaction() {
         jdbc.execute("DELETE FROM student");
+        jdbc.execute("ALTER TABLE student ALTER COLUMN ID RESTART WITH 1");
     }
 
     @BeforeAll
@@ -100,5 +107,10 @@ public class GradeBookControllerTest {
         ModelAndView mav = mvcResult.getModelAndView();
 
         ModelAndViewAssert.assertViewName(mav, "index");
+
+        CollegeStudent verifyStudent = studentDao.findByEmailAddress("eric.roby@guney.com");
+
+        assertNotNull(verifyStudent, "Student should be found");
+
     }
 }

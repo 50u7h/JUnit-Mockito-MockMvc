@@ -30,6 +30,7 @@ public class GradeBookController {
 
     @PostMapping("/")
     public String createStudent(@ModelAttribute("student") CollegeStudent student, Model model) {
+        studentAndGradeService.createStudent(student.getFirstname(), student.getLastname(), student.getEmailAddress());
         return "index";
     }
 }
