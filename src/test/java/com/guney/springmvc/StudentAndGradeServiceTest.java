@@ -188,4 +188,12 @@ public class StudentAndGradeServiceTest {
         assertEquals(1, gradeBookCollegeStudent.getStudentGrades().getHistoryGradeResults().size());
 
     }
+
+    @Test
+    public void studentInformationServiceReturnNull() {
+
+        GradeBookCollegeStudent gradebookCollegeStudent = studentAndGradeService.studentInformation(0);
+
+        assertNull(gradebookCollegeStudent);
+    }
 }
