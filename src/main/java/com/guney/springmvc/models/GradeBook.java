@@ -6,15 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class Gradebook {
+public class GradeBook {
 
     private List<GradebookCollegeStudent> students = new ArrayList<>();
 
-    public Gradebook() {
+    public GradeBook() {
 
     }
 
-    public Gradebook(List<GradebookCollegeStudent> students) {
+    public GradeBook(List<GradebookCollegeStudent> students) {
         this.students = students;
     }
 
