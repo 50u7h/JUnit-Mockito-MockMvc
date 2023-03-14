@@ -1,8 +1,10 @@
 package com.guney.springmvc;
 
 import com.guney.springmvc.models.CollegeStudent;
+import com.guney.springmvc.models.HistoryGrade;
 import com.guney.springmvc.models.MathGrade;
 import com.guney.springmvc.models.ScienceGrade;
+import com.guney.springmvc.repository.HistoryGradesDao;
 import com.guney.springmvc.repository.MathGradesDao;
 import com.guney.springmvc.repository.ScienceGradesDao;
 import com.guney.springmvc.repository.StudentDao;
@@ -40,6 +42,9 @@ public class StudentAndGradeServiceTest {
 
     @Autowired
     private ScienceGradesDao scienceGradeDao;
+
+    @Autowired
+    private HistoryGradesDao historyGradeDao;
 
     @BeforeEach
     public void setupDatabase() {
@@ -103,12 +108,16 @@ public class StudentAndGradeServiceTest {
 
         assertTrue(studentAndGradeService.createGrade(80.50, 1, "math"));
         assertTrue(studentAndGradeService.createGrade(80.50, 1, "science"));
+        assertTrue(studentAndGradeService.createGrade(80.50, 1, "history"));
+
 
         Iterable<MathGrade> mathGrades = mathGradeDao.findGradeByStudentId(1);
         Iterable<ScienceGrade> scienceGrades = scienceGradeDao.findGradeByStudentId(1);
+        Iterable<HistoryGrade> historyGrades = historyGradeDao.findGradeByStudentId(1);
 
 
         assertTrue(mathGrades.iterator().hasNext(), "Student has math grades");
-        assertTrue(scienceGrades.iterator().hasNext());
+        assertTrue(scienceGrades.iterator().hasNext(), "Student has science grades");
+        assertTrue(historyGrades.iterator().hasNext(), "Student has history grades");
     }
 }

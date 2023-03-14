@@ -1,8 +1,10 @@
 package com.guney.springmvc.service;
 
 import com.guney.springmvc.models.CollegeStudent;
+import com.guney.springmvc.models.HistoryGrade;
 import com.guney.springmvc.models.MathGrade;
 import com.guney.springmvc.models.ScienceGrade;
+import com.guney.springmvc.repository.HistoryGradesDao;
 import com.guney.springmvc.repository.MathGradesDao;
 import com.guney.springmvc.repository.ScienceGradesDao;
 import com.guney.springmvc.repository.StudentDao;
@@ -33,6 +35,13 @@ public class StudentAndGradeService {
 
     @Autowired
     private ScienceGradesDao scienceGradeDao;
+
+    @Autowired
+    @Qualifier("historyGrades")
+    private HistoryGrade historyGrade;
+
+    @Autowired
+    private HistoryGradesDao historyGradeDao;
 
     public void createStudent(String firstName, String lastName, String email) {
         CollegeStudent student = new CollegeStudent(firstName, lastName, email);
@@ -75,6 +84,13 @@ public class StudentAndGradeService {
                 scienceGrade.setGrade(grade);
                 scienceGrade.setStudentId(studentId);
                 scienceGradeDao.save(scienceGrade);
+                return true;
+            }
+            if (gradeType.equals("history")) {
+                historyGrade.setId(0);
+                historyGrade.setGrade(grade);
+                historyGrade.setStudentId(studentId);
+                historyGradeDao.save(historyGrade);
                 return true;
             }
         }
