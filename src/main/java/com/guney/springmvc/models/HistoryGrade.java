@@ -6,18 +6,23 @@ import jakarta.persistence.*;
 @Table(name = "history_grade")
 public class HistoryGrade implements Grade {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="student_id")
+    @Column(name = "student_id")
     private int studentId;
-    @Column(name="grade")
+    @Column(name = "grade")
     private double grade;
 
     public HistoryGrade() {
-
     }
 
     public HistoryGrade(double grade) {
+        this.grade = grade;
+    }
+
+    public HistoryGrade(int id, int studentId, double grade) {
+        this.id = id;
+        this.studentId = studentId;
         this.grade = grade;
     }
 

@@ -48,15 +48,26 @@ public class StudentAndGradeServiceTest {
 
     @BeforeEach
     public void setupDatabase() {
-        CollegeStudent student = new CollegeStudent("Eric", "Roby", "eric.roby@guney.com");
+        CollegeStudent student = new CollegeStudent("test", "TEST", "test.TEST@guney.com");
+
+        MathGrade mathGrade = new MathGrade(1, 1, 100.00);
+        ScienceGrade scienceGrade = new ScienceGrade(1, 1, 100.00);
+        HistoryGrade historyGrade = new HistoryGrade(1, 1, 100.00);
+
         student.setId(1);
+
         studentDao.save(student);
+        mathGradeDao.save(mathGrade);
+        scienceGradeDao.save(scienceGrade);
+        historyGradeDao.save(historyGrade);
     }
 
     @AfterEach
     public void setupAfterTransaction() {
         jdbc.execute("DELETE FROM student");
         jdbc.execute("ALTER TABLE student ALTER COLUMN ID RESTART WITH 1");
+        jdbc.execute("DELETE FROM math_grade");
+        jdbc.execute("ALTER TABLE math_grade ALTER COLUMN ID RESTART WITH 1");
     }
 
     @Test
