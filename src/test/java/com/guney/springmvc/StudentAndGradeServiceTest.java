@@ -1,6 +1,8 @@
 package com.guney.springmvc;
 
 import com.guney.springmvc.models.CollegeStudent;
+import com.guney.springmvc.models.MathGrade;
+import com.guney.springmvc.repository.MathGradesDao;
 import com.guney.springmvc.repository.StudentDao;
 import com.guney.springmvc.service.StudentAndGradeService;
 import org.junit.jupiter.api.AfterEach;
@@ -30,6 +32,9 @@ public class StudentAndGradeServiceTest {
 
     @Autowired
     private StudentDao studentDao;
+
+    @Autowired
+    private MathGradesDao mathGradeDao;
 
     @BeforeEach
     public void setupDatabase() {
@@ -86,5 +91,18 @@ public class StudentAndGradeServiceTest {
         }
 
         assertEquals(5, collegeStudents.size());
+    }
+
+    @Test
+    public void createGradeService() {
+
+        // Create the grade
+        assertTrue(studentAndGradeService.createGrade(80.50, 1, "math"));
+
+        // Get all grades with studentId
+        Iterable<MathGrade> mathGrades = mathGradeDao.findGradeByStudentId(1);
+
+        // Verify there is grades
+        assertTrue(mathGrades.iterator().hasNext(), "Student has math grades");
     }
 }
