@@ -66,6 +66,10 @@ public class StudentAndGradeServiceTest {
         jdbc.execute("ALTER TABLE student ALTER COLUMN ID RESTART WITH 1");
         jdbc.execute("DELETE FROM math_grade");
         jdbc.execute("ALTER TABLE math_grade ALTER COLUMN ID RESTART WITH 1");
+        jdbc.execute("DELETE FROM science_grade");
+        jdbc.execute("ALTER TABLE science_grade ALTER COLUMN ID RESTART WITH 1");
+        jdbc.execute("DELETE FROM history_grade");
+        jdbc.execute("ALTER TABLE history_grade ALTER COLUMN ID RESTART WITH 1");
     }
 
     @Test

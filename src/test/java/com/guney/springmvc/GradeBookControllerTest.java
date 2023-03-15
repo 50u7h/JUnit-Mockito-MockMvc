@@ -1,7 +1,9 @@
 package com.guney.springmvc;
 
-import com.guney.springmvc.models.CollegeStudent;
-import com.guney.springmvc.models.GradeBookCollegeStudent;
+import com.guney.springmvc.models.*;
+import com.guney.springmvc.repository.HistoryGradesDao;
+import com.guney.springmvc.repository.MathGradesDao;
+import com.guney.springmvc.repository.ScienceGradesDao;
 import com.guney.springmvc.repository.StudentDao;
 import com.guney.springmvc.service.StudentAndGradeService;
 import org.junit.jupiter.api.AfterEach;
@@ -50,18 +52,41 @@ public class GradeBookControllerTest {
     @Mock
     private StudentAndGradeService studentCreateServiceMock;
 
+    @Autowired
+    private MathGradesDao mathGradeDao;
+
+    @Autowired
+    private ScienceGradesDao scienceGradeDao;
+
+    @Autowired
+    private HistoryGradesDao historyGradeDao;
 
     @BeforeEach
     public void setupDatabase() {
-        CollegeStudent student = new CollegeStudent("Eric", "Roby", "eric.roby@guney.com");
+        CollegeStudent student = new CollegeStudent("test", "TEST", "test.TEST@guney.com");
+
+        MathGrade mathGrade = new MathGrade(1, 1, 100.00);
+        ScienceGrade scienceGrade = new ScienceGrade(1, 1, 100.00);
+        HistoryGrade historyGrade = new HistoryGrade(1, 1, 100.00);
+
         student.setId(1);
+
         studentDao.save(student);
+        mathGradeDao.save(mathGrade);
+        scienceGradeDao.save(scienceGrade);
+        historyGradeDao.save(historyGrade);
     }
 
     @AfterEach
     public void setupAfterTransaction() {
         jdbc.execute("DELETE FROM student");
         jdbc.execute("ALTER TABLE student ALTER COLUMN ID RESTART WITH 1");
+        jdbc.execute("DELETE FROM math_grade");
+        jdbc.execute("ALTER TABLE math_grade ALTER COLUMN ID RESTART WITH 1");
+        jdbc.execute("DELETE FROM science_grade");
+        jdbc.execute("ALTER TABLE science_grade ALTER COLUMN ID RESTART WITH 1");
+        jdbc.execute("DELETE FROM history_grade");
+        jdbc.execute("ALTER TABLE history_grade ALTER COLUMN ID RESTART WITH 1");
     }
 
     @BeforeAll
@@ -91,9 +116,8 @@ public class GradeBookControllerTest {
 
         ModelAndView mav = mvcResult.getModelAndView();
 
-        if (mav != null) {
-            ModelAndViewAssert.assertViewName(mav, "index");
-        }
+        ModelAndViewAssert.assertViewName(mav, "index");
+
     }
 
     @Test
@@ -116,11 +140,9 @@ public class GradeBookControllerTest {
 
         ModelAndView mav = mvcResult.getModelAndView();
 
-        if (mav != null) {
-            ModelAndViewAssert.assertViewName(mav, "index");
-        }
+        ModelAndViewAssert.assertViewName(mav, "index");
 
-        CollegeStudent verifyStudent = studentDao.findByEmailAddress("eric.roby@guney.com");
+        CollegeStudent verifyStudent = studentDao.findByEmailAddress("test.TEST@guney.com");
 
         assertNotNull(verifyStudent, "Student should be found");
     }
@@ -136,9 +158,7 @@ public class GradeBookControllerTest {
 
         ModelAndView mav = mvcResult.getModelAndView();
 
-        if (mav != null) {
-            ModelAndViewAssert.assertViewName(mav, "index");
-        }
+        ModelAndViewAssert.assertViewName(mav, "index");
 
         assertFalse(studentDao.findById(1).isPresent());
     }
@@ -152,8 +172,34 @@ public class GradeBookControllerTest {
 
         ModelAndView mav = mvcResult.getModelAndView();
 
-        if (mav != null) {
-            ModelAndViewAssert.assertViewName(mav, "error");
-        }
+        ModelAndViewAssert.assertViewName(mav, "error");
+    }
+
+    @Test
+    public void studentInformationHttpRequest() throws Exception {
+
+        assertTrue(studentDao.findById(1).isPresent());
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/studentInformation/{id}", 1))
+                .andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav, "studentInformation");
+    }
+
+    @Test
+    public void studentInformationHttpStudentDoesNotExistRequest() throws Exception {
+
+        assertFalse(studentDao.findById(0).isPresent());
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/studentInformation/{id}", 0))
+                .andExpect(status().isOk()).andReturn();
+
+        ModelAndView mav = mvcResult.getModelAndView();
+
+        ModelAndViewAssert.assertViewName(mav, "error");
     }
 }

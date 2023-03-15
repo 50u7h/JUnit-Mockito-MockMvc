@@ -14,24 +14,19 @@ public class GradeBookController {
     private GradeBook gradeBook;
 
     @Autowired
-    private StudentAndGradeService studentAndGradeService;
+    private StudentAndGradeService studentService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getStudents(Model m) {
-        Iterable<CollegeStudent> collegeStudents = studentAndGradeService.getGradeBook();
+        Iterable<CollegeStudent> collegeStudents = studentService.getGradeBook();
         m.addAttribute("students", collegeStudents);
         return "index";
     }
 
-    @GetMapping("/studentInformation/{id}")
-    public String studentInformation(@PathVariable int id, Model m) {
-        return "studentInformation";
-    }
-
     @PostMapping("/")
     public String createStudent(@ModelAttribute("student") CollegeStudent student, Model model) {
-        studentAndGradeService.createStudent(student.getFirstname(), student.getLastname(), student.getEmailAddress());
-        Iterable<CollegeStudent> collegeStudents = studentAndGradeService.getGradeBook();
+        studentService.createStudent(student.getFirstname(), student.getLastname(), student.getEmailAddress());
+        Iterable<CollegeStudent> collegeStudents = studentService.getGradeBook();
         model.addAttribute("students", collegeStudents);
 
         return "index";
@@ -40,14 +35,51 @@ public class GradeBookController {
     @GetMapping("/delete/student/{id}")
     public String deleteStudent(@PathVariable int id, Model model) {
 
-        if (!studentAndGradeService.checkIfStudentIsNull(id)) {
+        if (!studentService.checkIfStudentIsNull(id)) {
             return "error";
         }
 
-        studentAndGradeService.deleteStudent(id);
-        Iterable<CollegeStudent> collegeStudents = studentAndGradeService.getGradeBook();
+        studentService.deleteStudent(id);
+        Iterable<CollegeStudent> collegeStudents = studentService.getGradeBook();
         model.addAttribute("students", collegeStudents);
 
         return "index";
+    }
+
+    @GetMapping("/studentInformation/{id}")
+    public String studentInformation(@PathVariable int id, Model m) {
+
+        if (!studentService.checkIfStudentIsNull(id)) {
+            return "error";
+        }
+
+        GradeBookCollegeStudent studentEntity = studentService.studentInformation(id);
+
+        m.addAttribute("student", studentEntity);
+        if (studentEntity.getStudentGrades().getMathGradeResults().size() > 0) {
+            m.addAttribute("mathAverage", studentEntity.getStudentGrades().findGradePointAverage(
+                    studentEntity.getStudentGrades().getMathGradeResults()
+            ));
+        } else {
+            m.addAttribute("mathAverage", "N/A");
+        }
+
+        if (studentEntity.getStudentGrades().getScienceGradeResults().size() > 0) {
+            m.addAttribute("scienceAverage", studentEntity.getStudentGrades().findGradePointAverage(
+                    studentEntity.getStudentGrades().getScienceGradeResults()
+            ));
+        } else {
+            m.addAttribute("scienceAverage", "N/A");
+        }
+
+        if (studentEntity.getStudentGrades().getHistoryGradeResults().size() > 0) {
+            m.addAttribute("historyAverage", studentEntity.getStudentGrades().findGradePointAverage(
+                    studentEntity.getStudentGrades().getHistoryGradeResults()
+            ));
+        } else {
+            m.addAttribute("historyAverage", "N/A");
+        }
+
+        return "studentInformation";
     }
 }
