@@ -14,8 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,9 +43,6 @@ public class StudentAndGradeServiceTest {
 
     @Autowired
     private HistoryGradesDao historyGradeDao;
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @BeforeEach
     public void setupDatabase() {
@@ -201,6 +196,4 @@ public class StudentAndGradeServiceTest {
 
         assertNull(gradebookCollegeStudent);
     }
-
-
 }
