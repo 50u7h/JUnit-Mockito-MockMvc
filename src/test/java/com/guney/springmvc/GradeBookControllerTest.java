@@ -1,6 +1,7 @@
 package com.guney.springmvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.guney.springmvc.models.CollegeStudent;
 import com.guney.springmvc.repository.HistoryGradesDao;
 import com.guney.springmvc.repository.MathGradesDao;
 import com.guney.springmvc.repository.ScienceGradesDao;
@@ -20,10 +21,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @TestPropertySource("/application-test.properties")
 @AutoConfigureMockMvc
@@ -34,7 +39,7 @@ public class GradeBookControllerTest {
     private static MockHttpServletRequest request;
 
     @PersistenceContext
-    private EntityManager entityMgr;
+    private EntityManager entityManager;
 
     @Mock
     StudentAndGradeService studentCreateServiceMock;
@@ -62,6 +67,9 @@ public class GradeBookControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    private CollegeStudent student;
 
     @Value("${sql.script.create.student}")
     private String sqlAddStudent;
@@ -95,11 +103,11 @@ public class GradeBookControllerTest {
 
         request = new MockHttpServletRequest();
 
-        request.setParameter("firstname", "Chad");
+        request.setParameter("firstname", "test");
 
-        request.setParameter("lastname", "Darby");
+        request.setParameter("lastname", "TEST");
 
-        request.setParameter("emailAddress", "chad.darby@guney.com");
+        request.setParameter("emailAddress", "test.TEST@guney.com");
     }
 
     @BeforeEach
@@ -117,7 +125,22 @@ public class GradeBookControllerTest {
         jdbc.execute(sqlDeleteScienceGrade);
         jdbc.execute(sqlDeleteHistoryGrade);
     }
-    
+
+    @Test
+    public void getStudentsHttpRequest() throws Exception {
+
+        student.setFirstname("qwerty");
+        student.setLastname("ASDFGH");
+        student.setEmailAddress("qwerty.ASDFGH@guney.com");
+        entityManager.persist(student);
+        entityManager.flush();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$", hasSize(2)));
+
+    }
 }
 
 
