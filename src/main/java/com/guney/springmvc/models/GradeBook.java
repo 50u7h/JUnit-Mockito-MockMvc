@@ -6,23 +6,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class GradeBook {
+public class Gradebook {
 
-    private List<GradeBookCollegeStudent> students = new ArrayList<>();
+    List<GradebookCollegeStudent> students = new ArrayList<>();
 
-    public GradeBook() {
+    public Gradebook() {
 
     }
 
-    public GradeBook(List<GradeBookCollegeStudent> students) {
+    public Gradebook(List<GradebookCollegeStudent> students) {
         this.students = students;
     }
 
-    public List<GradeBookCollegeStudent> getStudents() {
+    public List<GradebookCollegeStudent> getStudents() {
         return students;
     }
 
-    public void setStudents(List<GradeBookCollegeStudent> students) {
+    public void setStudents(List<GradebookCollegeStudent> students) {
         this.students = students;
     }
 }

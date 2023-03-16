@@ -1,95 +1,123 @@
 package com.guney.springmvc.controller;
 
+import com.guney.springmvc.exceptionhandling.StudentOrGradeErrorResponse;
+import com.guney.springmvc.exceptionhandling.StudentOrGradeNotFoundException;
 import com.guney.springmvc.models.*;
 import com.guney.springmvc.service.StudentAndGradeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-public class GradeBookController {
+import java.util.List;
 
-    @Autowired
-    private GradeBook gradeBook;
+@RestController
+public class GradebookController {
 
     @Autowired
     private StudentAndGradeService studentService;
 
+    @Autowired
+    private Gradebook gradebook;
+
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String getStudents(Model m) {
-        Iterable<CollegeStudent> collegeStudents = studentService.getGradeBook();
-        m.addAttribute("students", collegeStudents);
-        return "index";
+    public List<GradebookCollegeStudent> getStudents() {
+        gradebook = studentService.getGradebook();
+        return gradebook.getStudents();
     }
 
-    @PostMapping("/")
-    public String createStudent(@ModelAttribute("student") CollegeStudent student, Model model) {
-        studentService.createStudent(student.getFirstname(), student.getLastname(), student.getEmailAddress());
-        Iterable<CollegeStudent> collegeStudents = studentService.getGradeBook();
-        model.addAttribute("students", collegeStudents);
 
-        return "index";
-    }
-
-    @GetMapping("/delete/student/{id}")
-    public String deleteStudent(@PathVariable int id, Model model) {
+    @GetMapping("/studentInformation/{id}")
+    public GradebookCollegeStudent studentInformation(@PathVariable int id) {
 
         if (!studentService.checkIfStudentIsNull(id)) {
-            return "error";
+            throw new StudentOrGradeNotFoundException("Student or Grade was not found");
+        }
+
+        return studentService.studentInformation(id);
+    }
+
+
+    @PostMapping(value = "/")
+    public List<GradebookCollegeStudent> createStudent(@RequestBody CollegeStudent student) {
+
+        studentService.createStudent(student.getFirstname(), student.getLastname(), student.getEmailAddress());
+        gradebook = studentService.getGradebook();
+        return gradebook.getStudents();
+    }
+
+
+    @DeleteMapping("/student/{id}")
+    public List<GradebookCollegeStudent> deleteStudent(@PathVariable int id) {
+
+        if (!studentService.checkIfStudentIsNull(id)) {
+            throw new StudentOrGradeNotFoundException("Student or Grade was not found");
         }
 
         studentService.deleteStudent(id);
-        Iterable<CollegeStudent> collegeStudents = studentService.getGradeBook();
-        model.addAttribute("students", collegeStudents);
-
-        return "index";
+        gradebook = studentService.getGradebook();
+        return gradebook.getStudents();
     }
 
-    @GetMapping("/studentInformation/{id}")
-    public String studentInformation(@PathVariable int id, Model m) {
-
-        if (!studentService.checkIfStudentIsNull(id)) {
-            return "error";
-        }
-
-        studentService.configureStudentInformationModel(id, m);
-
-        return "studentInformation";
-    }
 
     @PostMapping(value = "/grades")
-    public String createGrade(@RequestParam("grade") double grade,
-                              @RequestParam("gradeType") String gradeType,
-                              @RequestParam("studentId") int studentId,
-                              Model m) {
+    public GradebookCollegeStudent createGrade(@RequestParam("grade") double grade,
+                                               @RequestParam("gradeType") String gradeType,
+                                               @RequestParam("studentId") int studentId) {
 
         if (!studentService.checkIfStudentIsNull(studentId)) {
-            return "error";
+            throw new StudentOrGradeNotFoundException("Student or Grade was not found");
         }
 
         boolean success = studentService.createGrade(grade, studentId, gradeType);
 
         if (!success) {
-            return "error";
+            throw new StudentOrGradeNotFoundException("Student or Grade was not found");
         }
 
-        studentService.configureStudentInformationModel(studentId, m);
+        GradebookCollegeStudent studentEntity = studentService.studentInformation(studentId);
 
-        return "studentInformation";
+        if (studentEntity == null) {
+            throw new StudentOrGradeNotFoundException("Student or Grade was not found");
+        }
+
+        return studentEntity;
     }
 
-    @GetMapping("/grades/{id}/{gradeType}")
-    public String deleteGrade(@PathVariable int id, @PathVariable String gradeType, Model m) {
+    @DeleteMapping("/grades/{id}/{gradeType}")
+    public GradebookCollegeStudent deleteGrade(@PathVariable int id, @PathVariable String gradeType) {
 
         int studentId = studentService.deleteGrade(id, gradeType);
 
         if (studentId == 0) {
-            return "error";
+            throw new StudentOrGradeNotFoundException("Student or Grade was not found");
         }
 
-        studentService.configureStudentInformationModel(studentId, m);
+        return studentService.studentInformation(studentId);
+    }
 
-        return "studentInformation";
+    @ExceptionHandler
+    public ResponseEntity<StudentOrGradeErrorResponse> handleException(StudentOrGradeNotFoundException exc) {
+
+        StudentOrGradeErrorResponse error = new StudentOrGradeErrorResponse();
+
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setMessage(exc.getMessage());
+        error.setTimeStamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<StudentOrGradeErrorResponse> handleException(Exception exc) {
+
+        StudentOrGradeErrorResponse error = new StudentOrGradeErrorResponse();
+
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setMessage(exc.getMessage());
+        error.setTimeStamp(System.currentTimeMillis());
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }

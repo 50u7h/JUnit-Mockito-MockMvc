@@ -1,6 +1,6 @@
 package com.guney.springmvc.models;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "student")

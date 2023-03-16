@@ -22,8 +22,8 @@ public class MvcTestingExampleApplication {
 
     @Bean
     @Scope(value = "prototype")
-    Grade getMathGrade() {
-        return new MathGrade();
+    Grade getMathGrade(double grade) {
+        return new MathGrade(grade);
     }
 
     @Bean

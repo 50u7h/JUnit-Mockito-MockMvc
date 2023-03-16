@@ -1,6 +1,6 @@
 package com.guney.springmvc.models;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "math_grade")
@@ -18,12 +18,6 @@ public class MathGrade implements Grade {
     }
 
     public MathGrade(double grade) {
-        this.grade = grade;
-    }
-
-    public MathGrade(int id, int studentId, double grade) {
-        this.id = id;
-        this.studentId = studentId;
         this.grade = grade;
     }
 

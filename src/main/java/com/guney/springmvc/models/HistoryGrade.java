@@ -1,6 +1,6 @@
 package com.guney.springmvc.models;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "history_grade")
@@ -14,15 +14,10 @@ public class HistoryGrade implements Grade {
     private double grade;
 
     public HistoryGrade() {
+
     }
 
     public HistoryGrade(double grade) {
-        this.grade = grade;
-    }
-
-    public HistoryGrade(int id, int studentId, double grade) {
-        this.id = id;
-        this.studentId = studentId;
         this.grade = grade;
     }
 

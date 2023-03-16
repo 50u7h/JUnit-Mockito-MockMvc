@@ -1,9 +1,11 @@
 package com.guney.springmvc.repository;
 
 import com.guney.springmvc.models.MathGrade;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface MathGradesDao extends JpaRepository<MathGrade, Integer> {
+@Repository
+public interface MathGradesDao extends CrudRepository<MathGrade, Integer> {
 
     Iterable<MathGrade> findGradeByStudentId(int id);
 
