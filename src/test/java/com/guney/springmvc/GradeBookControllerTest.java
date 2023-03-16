@@ -2,6 +2,7 @@ package com.guney.springmvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guney.springmvc.models.CollegeStudent;
+import com.guney.springmvc.models.MathGrade;
 import com.guney.springmvc.repository.HistoryGradesDao;
 import com.guney.springmvc.repository.MathGradesDao;
 import com.guney.springmvc.repository.ScienceGradesDao;
@@ -255,6 +256,23 @@ public class GradeBookControllerTest {
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.status", is(404)))
                 .andExpect(jsonPath("$.message", is("Student or Grade was not found")));
+    }
+
+    @Test
+    public void deleteAValidGradeHttpRequest() throws Exception {
+
+        Optional<MathGrade> mathGrade = mathGradeDao.findById(1);
+
+        assertTrue(mathGrade.isPresent());
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/grades/{id}/{gradeType}", 1, "math"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.firstname", is("Eric")))
+                .andExpect(jsonPath("$.lastname", is("Roby")))
+                .andExpect(jsonPath("$.emailAddress", is("eric.roby@guney.com")))
+                .andExpect(jsonPath("$.studentGrades.mathGradeResults", hasSize(0)));
     }
 }
 
